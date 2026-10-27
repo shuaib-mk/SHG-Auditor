@@ -1,0 +1,114 @@
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" width="720" height="520">
+      <!-- Paper background with aged texture feel -->
+      <rect width="720" height="520" fill="#fdfbf7"/>
+      <rect x="15" y="15" width="690" height="490" fill="#fffefb" stroke="#cbd5e0" stroke-width="2" rx="4"/>
+      
+      <!-- Ledger Header -->
+      <text x="360" y="45" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="18" font-weight="bold" fill="#1a365d">
+        PRERNA MAHILA SAMRUDDHI SHG
+      </text>
+      <text x="360" y="68" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="13" fill="#4a5568">
+        गाँव/Village: Rampur Gram Panchayat | दिनांक/Date: 2026-10-24
+      </text>
+
+      <!-- Table Header Box -->
+      <rect x="20" y="85" width="680" height="34" fill="#edf2f7" stroke="#cbd5e0" stroke-width="1"/>
+      <text x="30" y="106" font-family="sans-serif" font-size="11" font-weight="bold" fill="#2d3748">क्र./#</text>
+      <text x="60" y="106" font-family="sans-serif" font-size="11" font-weight="bold" fill="#2d3748">सदस्य नाम / Member</text>
+      <text x="210" y="106" font-family="sans-serif" font-size="11" font-weight="bold" fill="#2d3748">बचत / Savings</text>
+      <text x="310" y="106" font-family="sans-serif" font-size="11" font-weight="bold" fill="#2d3748">ऋण वापसी / Loan</text>
+      <text x="410" y="106" font-family="sans-serif" font-size="11" font-weight="bold" fill="#2d3748">ब्याज / Interest</text>
+      <text x="510" y="106" font-family="sans-serif" font-size="11" font-weight="bold" fill="#2d3748">दंड / Fine</text>
+      <text x="610" y="106" font-family="sans-serif" font-size="11" font-weight="bold" fill="#2d3748">कुल / Total</text>
+
+      <!-- Data Rows -->
+      
+      <rect x="20" y="121" width="680" height="34" fill="#ffffff" stroke="#e2ded4" stroke-width="0.5"/>
+      <text x="30" y="145" font-family="Arial, sans-serif" font-size="12" fill="#555">1</text>
+      <text x="60" y="145" font-family="'Segoe UI', cursive, sans-serif" font-weight="600" font-size="13" fill="#2d3748">Sunita Devi</text>
+      <text x="210" y="145" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹200</text>
+      <text x="310" y="145" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="410" y="145" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="510" y="145" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="610" y="145" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹200</text>
+    
+      <rect x="20" y="157" width="680" height="34" fill="#faf7f2" stroke="#e2ded4" stroke-width="0.5"/>
+      <text x="30" y="181" font-family="Arial, sans-serif" font-size="12" fill="#555">2</text>
+      <text x="60" y="181" font-family="'Segoe UI', cursive, sans-serif" font-weight="600" font-size="13" fill="#2d3748">Radha Bai</text>
+      <text x="210" y="181" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹200</text>
+      <text x="310" y="181" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="410" y="181" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="510" y="181" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="610" y="181" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹200</text>
+    
+      <rect x="20" y="193" width="680" height="34" fill="#ffffff" stroke="#e2ded4" stroke-width="0.5"/>
+      <text x="30" y="217" font-family="Arial, sans-serif" font-size="12" fill="#555">3</text>
+      <text x="60" y="217" font-family="'Segoe UI', cursive, sans-serif" font-weight="600" font-size="13" fill="#2d3748">Anita Sharma</text>
+      <text x="210" y="217" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹200</text>
+      <text x="310" y="217" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="410" y="217" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="510" y="217" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="610" y="217" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹200</text>
+    
+      <rect x="20" y="229" width="680" height="34" fill="#faf7f2" stroke="#e2ded4" stroke-width="0.5"/>
+      <text x="30" y="253" font-family="Arial, sans-serif" font-size="12" fill="#555">4</text>
+      <text x="60" y="253" font-family="'Segoe UI', cursive, sans-serif" font-weight="600" font-size="13" fill="#2d3748">Meena Patel</text>
+      <text x="210" y="253" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹200</text>
+      <text x="310" y="253" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹400</text>
+      <text x="410" y="253" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹50</text>
+      <text x="510" y="253" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="610" y="253" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹650</text>
+    
+      <rect x="20" y="265" width="680" height="34" fill="#ffffff" stroke="#e2ded4" stroke-width="0.5"/>
+      <text x="30" y="289" font-family="Arial, sans-serif" font-size="12" fill="#555">5</text>
+      <text x="60" y="289" font-family="'Segoe UI', cursive, sans-serif" font-weight="600" font-size="13" fill="#2d3748">Geeta Verma</text>
+      <text x="210" y="289" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹200</text>
+      <text x="310" y="289" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹300</text>
+      <text x="410" y="289" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹30</text>
+      <text x="510" y="289" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹10</text>
+      <text x="610" y="289" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹540</text>
+    
+      <rect x="20" y="301" width="680" height="34" fill="#faf7f2" stroke="#e2ded4" stroke-width="0.5"/>
+      <text x="30" y="325" font-family="Arial, sans-serif" font-size="12" fill="#555">6</text>
+      <text x="60" y="325" font-family="'Segoe UI', cursive, sans-serif" font-weight="600" font-size="13" fill="#2d3748">Savitri Bai</text>
+      <text x="210" y="325" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹200</text>
+      <text x="310" y="325" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="410" y="325" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="510" y="325" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="610" y="325" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹250</text>
+    
+      <rect x="20" y="337" width="680" height="34" fill="#ffffff" stroke="#e2ded4" stroke-width="0.5"/>
+      <text x="30" y="361" font-family="Arial, sans-serif" font-size="12" fill="#555">7</text>
+      <text x="60" y="361" font-family="'Segoe UI', cursive, sans-serif" font-weight="600" font-size="13" fill="#2d3748">Rekha Yadav</text>
+      <text x="210" y="361" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹200</text>
+      <text x="310" y="361" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹400</text>
+      <text x="410" y="361" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹40</text>
+      <text x="510" y="361" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="610" y="361" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹640</text>
+    
+      <rect x="20" y="373" width="680" height="34" fill="#faf7f2" stroke="#e2ded4" stroke-width="0.5"/>
+      <text x="30" y="397" font-family="Arial, sans-serif" font-size="12" fill="#555">8</text>
+      <text x="60" y="397" font-family="'Segoe UI', cursive, sans-serif" font-weight="600" font-size="13" fill="#2d3748">Pushpa Devi</text>
+      <text x="210" y="397" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹200</text>
+      <text x="310" y="397" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹200</text>
+      <text x="410" y="397" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹20</text>
+      <text x="510" y="397" font-family="'Courier New', monospace" font-size="13" fill="#1a202c">₹0</text>
+      <text x="610" y="397" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹420</text>
+    
+
+      <!-- Footer / Totals Box -->
+      <rect x="20" y="421" width="680" height="36" fill="#ebf8ff" stroke="#90cdf4" stroke-width="1.5"/>
+      <text x="60" y="443" font-family="sans-serif" font-weight="bold" font-size="13" fill="#2b6cb0">कुल योग / GRAND TOTAL</text>
+      <text x="210" y="443" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹1600</text>
+      <text x="310" y="443" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹1300</text>
+      <text x="410" y="443" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹140</text>
+      <text x="510" y="443" font-family="'Courier New', monospace" font-weight="bold" font-size="13" fill="#2b6cb0">₹10</text>
+      <text x="610" y="443" font-family="'Courier New', monospace" font-weight="bold" font-size="14" fill="#c53030">₹3100</text>
+
+      <!-- Box Cash Count Note -->
+      <text x="30" y="477" font-family="sans-serif" font-size="11" fill="#718096">
+        बॉक्स में कुल भौतिक नकद राशि / Physical Cash Counted in Box: ₹3000
+      </text>
+    </svg>
+  

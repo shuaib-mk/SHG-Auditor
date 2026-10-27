@@ -1,0 +1,50 @@
+[
+  {
+    "id": "m1",
+    "name": "Sunita Devi",
+    "openingSavings": 4200,
+    "openingLoanBalance": 3000
+  },
+  {
+    "id": "m2",
+    "name": "Radha Bai",
+    "openingSavings": 3800,
+    "openingLoanBalance": 2000
+  },
+  {
+    "id": "m3",
+    "name": "Anita Sharma",
+    "openingSavings": 5100,
+    "openingLoanBalance": 0
+  },
+  {
+    "id": "m4",
+    "name": "Meena Patel",
+    "openingSavings": 4600,
+    "openingLoanBalance": 4500
+  },
+  {
+    "id": "m5",
+    "name": "Geeta Verma",
+    "openingSavings": 3900,
+    "openingLoanBalance": 1500
+  },
+  {
+    "id": "m6",
+    "name": "Savitri Bai",
+    "openingSavings": 4400,
+    "openingLoanBalance": 0
+  },
+  {
+    "id": "m7",
+    "name": "Rekha Yadav",
+    "openingSavings": 3200,
+    "openingLoanBalance": 2500
+  },
+  {
+    "id": "m8",
+    "name": "Pushpa Devi",
+    "openingSavings": 4800,
+    "openingLoanBalance": 1000
+  }
+]
