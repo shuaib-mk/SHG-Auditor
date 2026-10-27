@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "tsx watch server/index.ts",
-    "dev:client": "vite client --port 5173",
-    "build": "vite build client",
+    "dev:client": "vite --port 5173",
+    "build": "vite build",
+    "start": "tsx server/index.ts",
     "test": "vitest run",
     "seed": "tsx scripts/seedData.ts"
   },
