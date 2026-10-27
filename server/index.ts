@@ -34,7 +34,8 @@ app.use('/api', apiRouter);
 const clientDist = path.join(__dirname, '../client/dist');
 app.use(express.static(clientDist));
 
-app.get('*', (req, res, next) => {
+// Fallback for SPA routing in Express 5
+app.use((req, res, next) => {
   if (req.path.startsWith('/api')) {
     return next();
   }
