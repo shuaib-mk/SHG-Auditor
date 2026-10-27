@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Camera, Upload, Sparkles, AlertTriangle, Eye, ArrowRight } from 'lucide-react';
+import { Camera, Upload, Sparkles, AlertTriangle, Eye, ArrowRight, Edit2, Check } from 'lucide-react';
 import { Language, translations } from '../i18n/translations';
 import { RegisterPageData, RegisterRow } from '../../../shared/types';
 
@@ -91,79 +91,85 @@ export const RegisterUpload: React.FC<RegisterUploadProps> = ({
   };
 
   return (
-    <div className="card">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
-        <div>
-          <h2 style={{ fontSize: '18px', fontWeight: 700 }}>{t.step2}</h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-            Muse Spark Vision OCR • Per-Cell Confidence • Fixed SHG Ledger Template
-          </p>
-        </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button onClick={loadSampleRegister} className="btn-secondary" disabled={isLoading}>
-            <Sparkles size={16} color="var(--primary)" />
-            <span>{t.loadSampleRegister}</span>
-          </button>
-        </div>
+    <div>
+      {/* Step Header */}
+      <div style={{ marginBottom: '14px' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)' }}>
+          {t.step2Title}
+        </h2>
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+          {t.step2Desc}
+        </p>
       </div>
 
-      {/* Upload Controls */}
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        <label className="btn-primary" style={{ cursor: 'pointer' }}>
-          <Upload size={18} />
-          <span>{t.uploadFile}</span>
-          <input type="file" accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
-        </label>
-        <label className="btn-secondary" style={{ cursor: 'pointer' }}>
-          <Camera size={18} />
-          <span>{t.takePhoto}</span>
-          <input type="file" accept="image/*" capture="environment" onChange={handleFileUpload} style={{ display: 'none' }} />
-        </label>
-        {registerImageUrl && (
-          <button
-            onClick={() => setShowImagePreview(!showImagePreview)}
-            className="btn-secondary"
-          >
-            <Eye size={16} />
-            <span>{showImagePreview ? 'Hide Register Photo' : 'Show Register Photo'}</span>
-          </button>
+      {/* Main Upload / Snap Card */}
+      <div className="surface-card">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
+          <label className="btn-touch-primary" style={{ cursor: 'pointer', textAlign: 'center', justifyContent: 'center' }}>
+            <Camera size={20} />
+            <span>{t.takePhoto}</span>
+            <input type="file" accept="image/*" capture="environment" onChange={handleFileUpload} style={{ display: 'none' }} />
+          </label>
+
+          <label className="btn-touch-secondary" style={{ cursor: 'pointer', textAlign: 'center', justifyContent: 'center' }}>
+            <Upload size={18} />
+            <span>{t.uploadFile}</span>
+            <input type="file" accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
+          </label>
+        </div>
+
+        {/* 1-Tap Demo Sample Button */}
+        <button
+          onClick={loadSampleRegister}
+          className="btn-touch-secondary"
+          disabled={isLoading}
+          style={{ width: '100%', borderRadius: 'var(--radius-full)', background: 'var(--bg-subtle)' }}
+        >
+          <Sparkles size={16} color="var(--primary)" />
+          <span>{t.loadSampleRegister}</span>
+        </button>
+
+        {isLoading && (
+          <div style={{ textAlign: 'center', padding: '16px 0', color: 'var(--primary)', fontWeight: 700, fontSize: '13px' }}>
+            ⏳ {t.processingRegister}
+          </div>
         )}
       </div>
 
-      {isLoading && (
-        <div style={{ textAlign: 'center', padding: '24px', color: 'var(--primary)', fontWeight: 600 }}>
-          ⏳ {t.processingRegister}
-        </div>
-      )}
-
-      {/* Visual Register Ledger Preview */}
+      {/* Register Photo Preview */}
       {showImagePreview && registerImageUrl && (
-        <div style={{ marginBottom: '20px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', textAlign: 'center', background: '#faf8f5', padding: '10px' }}>
-          <img
-            src={registerImageUrl}
-            alt="Handwritten SHG Register"
-            style={{ maxWidth: '100%', maxHeight: '340px', objectFit: 'contain', borderRadius: '4px' }}
-          />
+        <div className="surface-card" style={{ padding: '10px', textAlign: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)' }}>
+              {lang === 'hi' ? 'रजिस्टर की फोटो:' : 'Notebook Photo:'}
+            </span>
+            <button
+              onClick={() => setShowImagePreview(!showImagePreview)}
+              style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: 600 }}
+            >
+              {showImagePreview ? (lang === 'hi' ? 'छिपाएं' : 'Hide') : (lang === 'hi' ? 'दिखाएं' : 'Show')}
+            </button>
+          </div>
+          <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', maxHeight: '200px', background: '#faf8f5' }}>
+            <img
+              src={registerImageUrl}
+              alt="Handwritten SHG Register"
+              style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+            />
+          </div>
         </div>
       )}
 
       {/* Structured OCR Table Preview with Confidence Highlight */}
       {registerData && (
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <AlertTriangle size={16} color="var(--warning)" />
-              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                {t.lowConfidenceWarning}
-              </span>
-            </div>
-            <button onClick={onProceedToReconcile} className="btn-accent" style={{ padding: '8px 16px', fontSize: '14px' }}>
-              <span>{t.runReconcile}</span>
-              <ArrowRight size={16} />
-            </button>
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ padding: '8px 12px', background: 'var(--saffron-light)', color: 'var(--saffron)', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', fontWeight: 700, marginBottom: '12px' }}>
+            <AlertTriangle size={14} style={{ flexShrink: 0 }} />
+            <span>{t.lowConfidenceWarning}</span>
           </div>
 
-          <div className="table-container">
+          {/* Mobile-Friendly Horizontal Scroll Table */}
+          <div className="table-container" style={{ background: 'var(--bg-card)', marginBottom: '16px' }}>
             <table>
               <thead>
                 <tr>
@@ -185,55 +191,51 @@ export const RegisterUpload: React.FC<RegisterUploadProps> = ({
 
                   return (
                     <tr key={idx}>
-                      <td style={{ color: 'var(--text-muted)' }}>{idx + 1}</td>
-                      <td style={{ fontWeight: 600 }}>{row.memberName}</td>
+                      <td style={{ color: 'var(--text-muted)', fontWeight: 600 }}>{idx + 1}</td>
+                      <td style={{ fontWeight: 700 }}>{row.memberName}</td>
 
-                      {/* Savings Cell */}
+                      {/* Savings */}
                       <td className={isSavingsLow ? 'cell-low-confidence' : ''}>
                         <input
                           type="number"
                           value={row.savings}
                           onChange={(e) => updateCell(idx, 'savings', parseFloat(e.target.value) || 0)}
-                          style={{ width: '80px', padding: '4px 6px', border: 'none', background: 'transparent', fontWeight: 'bold' }}
-                          title={`Confidence: ${Math.round((row.confidence?.savings ?? 1) * 100)}%`}
+                          style={{ width: '65px', padding: '4px', border: 'none', background: 'transparent', fontWeight: 800, fontSize: '13px' }}
                         />
                       </td>
 
-                      {/* Loan Repaid Cell */}
+                      {/* Loan Repaid */}
                       <td className={isLoanLow ? 'cell-low-confidence' : ''}>
                         <input
                           type="number"
                           value={row.loanRepaid}
                           onChange={(e) => updateCell(idx, 'loanRepaid', parseFloat(e.target.value) || 0)}
-                          style={{ width: '80px', padding: '4px 6px', border: 'none', background: 'transparent', fontWeight: 'bold' }}
-                          title={`Confidence: ${Math.round((row.confidence?.loanRepaid ?? 1) * 100)}%`}
+                          style={{ width: '65px', padding: '4px', border: 'none', background: 'transparent', fontWeight: 800, fontSize: '13px' }}
                         />
                       </td>
 
-                      {/* Interest Cell */}
+                      {/* Interest */}
                       <td className={isIntLow ? 'cell-low-confidence' : ''}>
                         <input
                           type="number"
                           value={row.interest}
                           onChange={(e) => updateCell(idx, 'interest', parseFloat(e.target.value) || 0)}
-                          style={{ width: '70px', padding: '4px 6px', border: 'none', background: 'transparent', fontWeight: 'bold' }}
-                          title={`Confidence: ${Math.round((row.confidence?.interest ?? 1) * 100)}%`}
+                          style={{ width: '55px', padding: '4px', border: 'none', background: 'transparent', fontWeight: 800, fontSize: '13px' }}
                         />
                       </td>
 
-                      {/* Fine Cell */}
+                      {/* Fine */}
                       <td className={isFineLow ? 'cell-low-confidence' : ''}>
                         <input
                           type="number"
                           value={row.fine}
                           onChange={(e) => updateCell(idx, 'fine', parseFloat(e.target.value) || 0)}
-                          style={{ width: '60px', padding: '4px 6px', border: 'none', background: 'transparent', fontWeight: 'bold' }}
-                          title={`Confidence: ${Math.round((row.confidence?.fine ?? 1) * 100)}%`}
+                          style={{ width: '50px', padding: '4px', border: 'none', background: 'transparent', fontWeight: 800, fontSize: '13px' }}
                         />
                       </td>
 
-                      {/* Row Total */}
-                      <td style={{ fontWeight: 800, color: 'var(--primary)' }}>
+                      {/* Total */}
+                      <td style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '14px' }}>
                         ₹{row.total}
                       </td>
                     </tr>
@@ -242,7 +244,7 @@ export const RegisterUpload: React.FC<RegisterUploadProps> = ({
               </tbody>
               <tfoot>
                 <tr style={{ background: 'var(--bg-subtle)', fontWeight: 800 }}>
-                  <td colSpan={2}>{t.grandTotal} (Register Footer)</td>
+                  <td colSpan={2}>{t.grandTotal}</td>
                   <td>₹{registerData.totals.savings}</td>
                   <td>₹{registerData.totals.loanRepaid}</td>
                   <td>₹{registerData.totals.interest}</td>
@@ -254,6 +256,11 @@ export const RegisterUpload: React.FC<RegisterUploadProps> = ({
               </tfoot>
             </table>
           </div>
+
+          {/* Big Action Button to Run Reconciliation */}
+          <button onClick={onProceedToReconcile} className="btn-touch-accent">
+            <span>{t.runReconcile} →</span>
+          </button>
         </div>
       )}
     </div>

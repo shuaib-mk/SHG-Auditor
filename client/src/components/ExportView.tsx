@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Printer, CheckCircle, FileSpreadsheet, ShieldCheck } from 'lucide-react';
+import { Download, Printer, ShieldCheck, FileSpreadsheet } from 'lucide-react';
 import { Language, translations } from '../i18n/translations';
 import { ReconciliationReport, RegisterPageData, FinalLedgerEntry } from '../../../shared/types';
 
@@ -18,8 +18,10 @@ export const ExportView: React.FC<ExportViewProps> = ({
 
   if (!report || !registerData) {
     return (
-      <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-        <p style={{ color: 'var(--text-muted)' }}>No reconciled meeting ledger available to export.</p>
+      <div className="surface-card" style={{ textAlign: 'center', padding: '36px 16px' }}>
+        <p style={{ color: 'var(--text-muted)' }}>
+          {lang === 'hi' ? 'कोई हिसाब उपलब्ध नहीं है।' : 'No reconciled meeting ledger available to export.'}
+        </p>
       </div>
     );
   }
@@ -32,23 +34,22 @@ export const ExportView: React.FC<ExportViewProps> = ({
     let fine = row.fine;
     const remarksArr: string[] = [];
 
-    // Check if any discrepancy was resolved for this member
     report.discrepancies.forEach((d) => {
       if (d.memberName.trim().toLowerCase() === row.memberName.trim().toLowerCase()) {
         const val = d.resolvedValue ?? (d.status === 'RESOLVED_SPOKEN' ? d.spokenValue : d.writtenValue);
         if (val !== undefined) {
           if (d.field === 'savings') {
             savings = val;
-            remarksArr.push(`Savings adjusted to ₹${val} (${d.status})`);
+            remarksArr.push(`Savings: ₹${val}`);
           } else if (d.field === 'loanRepaid') {
             loanRepaid = val;
-            remarksArr.push(`Loan repayment adjusted to ₹${val} (${d.status})`);
+            remarksArr.push(`Loan: ₹${val}`);
           } else if (d.field === 'interest') {
             interest = val;
-            remarksArr.push(`Interest adjusted to ₹${val}`);
+            remarksArr.push(`Interest: ₹${val}`);
           } else if (d.field === 'fine') {
             fine = val;
-            remarksArr.push(`Fine adjusted to ₹${val}`);
+            remarksArr.push(`Fine: ₹${val}`);
           }
         }
       }
@@ -64,7 +65,7 @@ export const ExportView: React.FC<ExportViewProps> = ({
       fine,
       total,
       closingLoanBalance: 0,
-      remarks: remarksArr.length > 0 ? remarksArr.join('; ') : 'Verified',
+      remarks: remarksArr.length > 0 ? remarksArr.join('; ') : 'OK',
     };
   });
 
@@ -87,7 +88,6 @@ export const ExportView: React.FC<ExportViewProps> = ({
       `"${e.remarks}"`,
     ]);
 
-    // Footer row
     rows.push(['TOTAL', 'GRAND TOTAL', grandSavings, grandLoanRepaid, grandInterest, grandFine, grandTotal, 'RECONCILED']);
 
     const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
@@ -95,7 +95,7 @@ export const ExportView: React.FC<ExportViewProps> = ({
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `${registerData.shgName.replace(/\s+/g, '_')}_${registerData.meetingDate}_reconciled.csv`);
+    link.setAttribute('download', `${registerData.shgName.replace(/\s+/g, '_')}_${registerData.meetingDate}_verified.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -107,116 +107,113 @@ export const ExportView: React.FC<ExportViewProps> = ({
 
   return (
     <div>
-      {/* Action Bar (hidden on print) */}
-      <div className="card no-print">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <ShieldCheck size={22} color="var(--accent)" />
-              <h2 style={{ fontSize: '18px', fontWeight: 700 }}>{t.exportTitle}</h2>
-            </div>
-            <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-              {t.readyForGov}
-            </p>
-          </div>
+      {/* Header Info */}
+      <div style={{ marginBottom: '14px' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)' }}>
+          {t.step4Title}
+        </h2>
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+          {t.step4Desc}
+        </p>
+      </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button onClick={downloadCsv} className="btn-primary">
-              <Download size={16} />
-              <span>{t.downloadCsv}</span>
-            </button>
-            <button onClick={handlePrint} className="btn-secondary">
-              <Printer size={16} />
-              <span>{t.printVoucher}</span>
-            </button>
-          </div>
+      {/* Action Buttons */}
+      <div className="surface-card no-print" style={{ padding: '16px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <button onClick={downloadCsv} className="btn-touch-accent">
+            <Download size={18} />
+            <span>{t.downloadCsv}</span>
+          </button>
+
+          <button onClick={handlePrint} className="btn-touch-secondary" style={{ width: '100%' }}>
+            <Printer size={18} />
+            <span>{t.printVoucher}</span>
+          </button>
         </div>
       </div>
 
-      {/* Printable 1-Page Meeting Voucher */}
-      <div className="card print-voucher" style={{ padding: '24px', background: '#ffffff', color: '#1e293b' }}>
-        {/* Voucher Header */}
-        <div style={{ textAlign: 'center', borderBottom: '2px solid #0f172a', paddingBottom: '12px', marginBottom: '16px' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 800, textTransform: 'uppercase', color: '#1e3a8a' }}>
+      {/* Printable 1-Page Official Voucher Card */}
+      <div className="surface-card print-voucher" style={{ padding: '18px', background: '#ffffff', color: '#1c1917' }}>
+        <div style={{ textAlign: 'center', borderBottom: '2px solid #1e3a8a', paddingBottom: '10px', marginBottom: '12px' }}>
+          <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#1e3a8a', textTransform: 'uppercase' }}>
             {registerData.shgName}
-          </h2>
-          <p style={{ fontSize: '13px', fontWeight: 600, color: '#475569' }}>
-            साप्ताहिक बैठक हिसाब वाउचर / WEEKLY MEETING AUDIT VOUCHER
+          </h3>
+          <p style={{ fontSize: '12px', fontWeight: 600, color: '#44403c' }}>
+            {lang === 'hi' ? 'साप्ताहिक बैठक हिसाब वाउचर' : 'WEEKLY MEETING RECONCILIATION VOUCHER'}
           </p>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px', fontSize: '13px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginTop: '6px', color: '#78716c' }}>
             <span><strong>गाँव/Village:</strong> {registerData.village}</span>
             <span><strong>दिनांक/Date:</strong> {registerData.meetingDate}</span>
-            <span><strong>ऑडिट स्थिति/Audit Status:</strong> <span style={{ color: '#059669', fontWeight: 'bold' }}>✓ RECONCILED</span></span>
           </div>
         </div>
 
-        {/* Ledger Table */}
-        <div className="table-container" style={{ marginBottom: '20px' }}>
-          <table style={{ border: '1px solid #cbd5e1' }}>
+        {/* Totals Summary Chips */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px', marginBottom: '12px', textAlign: 'center' }}>
+          <div style={{ background: '#f8fafc', padding: '6px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '10px', color: '#64748b' }}>कुल बचत</div>
+            <div style={{ fontSize: '13px', fontWeight: 800, color: '#1e3a8a' }}>₹{grandSavings}</div>
+          </div>
+          <div style={{ background: '#f8fafc', padding: '6px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '10px', color: '#64748b' }}>ऋण वापसी</div>
+            <div style={{ fontSize: '13px', fontWeight: 800, color: '#1e3a8a' }}>₹{grandLoanRepaid}</div>
+          </div>
+          <div style={{ background: '#ecfdf5', padding: '6px', borderRadius: '6px', border: '1px solid #a7f3d0' }}>
+            <div style={{ fontSize: '10px', color: '#047857' }}>महायोग</div>
+            <div style={{ fontSize: '14px', fontWeight: 800, color: '#047857' }}>₹{grandTotal}</div>
+          </div>
+        </div>
+
+        {/* Member Table */}
+        <div className="table-container" style={{ marginBottom: '16px' }}>
+          <table>
             <thead>
-              <tr style={{ background: '#f1f5f9', color: '#1e293b' }}>
-                <th style={{ border: '1px solid #cbd5e1' }}>क्र.</th>
-                <th style={{ border: '1px solid #cbd5e1' }}>सदस्य का नाम / Member Name</th>
-                <th style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>बचत (₹)</th>
-                <th style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>ऋण वापसी (₹)</th>
-                <th style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>ब्याज (₹)</th>
-                <th style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>दंड (₹)</th>
-                <th style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>कुल संग्रह (₹)</th>
-                <th style={{ border: '1px solid #cbd5e1' }}>रिमार्क / Audit Remark</th>
+              <tr style={{ background: '#f1f5f9' }}>
+                <th>#</th>
+                <th>सदस्य / Member</th>
+                <th style={{ textAlign: 'right' }}>बचत</th>
+                <th style={{ textAlign: 'right' }}>किस्त</th>
+                <th style={{ textAlign: 'right' }}>ब्याज</th>
+                <th style={{ textAlign: 'right' }}>कुल</th>
               </tr>
             </thead>
             <tbody>
-              {finalEntries.map((entry, idx) => (
+              {finalEntries.map((e, idx) => (
                 <tr key={idx}>
-                  <td style={{ border: '1px solid #cbd5e1', textAlign: 'center' }}>{idx + 1}</td>
-                  <td style={{ border: '1px solid #cbd5e1', fontWeight: 600 }}>{entry.memberName}</td>
-                  <td style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>₹{entry.savings}</td>
-                  <td style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>₹{entry.loanRepaid}</td>
-                  <td style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>₹{entry.interest}</td>
-                  <td style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>₹{entry.fine}</td>
-                  <td style={{ border: '1px solid #cbd5e1', textAlign: 'right', fontWeight: 800, color: '#1e40af' }}>₹{entry.total}</td>
-                  <td style={{ border: '1px solid #cbd5e1', fontSize: '11px', color: '#64748b' }}>{entry.remarks}</td>
+                  <td>{idx + 1}</td>
+                  <td style={{ fontWeight: 700 }}>{e.memberName}</td>
+                  <td style={{ textAlign: 'right' }}>₹{e.savings}</td>
+                  <td style={{ textAlign: 'right' }}>₹{e.loanRepaid}</td>
+                  <td style={{ textAlign: 'right' }}>₹{e.interest}</td>
+                  <td style={{ textAlign: 'right', fontWeight: 800, color: '#1e3a8a' }}>₹{e.total}</td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
               <tr style={{ background: '#e2e8f0', fontWeight: 800 }}>
-                <td colSpan={2} style={{ border: '1px solid #cbd5e1', textAlign: 'center' }}>कुल महायोग / GRAND TOTAL</td>
-                <td style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>₹{grandSavings}</td>
-                <td style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>₹{grandLoanRepaid}</td>
-                <td style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>₹{grandInterest}</td>
-                <td style={{ border: '1px solid #cbd5e1', textAlign: 'right' }}>₹{grandFine}</td>
-                <td style={{ border: '1px solid #cbd5e1', textAlign: 'right', color: '#1e40af', fontSize: '16px' }}>₹{grandTotal}</td>
-                <td style={{ border: '1px solid #cbd5e1', fontSize: '11px', color: '#059669' }}>MATHEMATICALLY VERIFIED</td>
+                <td colSpan={2}>कुल योग</td>
+                <td style={{ textAlign: 'right' }}>₹{grandSavings}</td>
+                <td style={{ textAlign: 'right' }}>₹{grandLoanRepaid}</td>
+                <td style={{ textAlign: 'right' }}>₹{grandInterest}</td>
+                <td style={{ textAlign: 'right', color: '#1e3a8a', fontSize: '14px' }}>₹{grandTotal}</td>
               </tr>
             </tfoot>
           </table>
         </div>
 
-        {/* Signatures & Certification Box */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginTop: '36px', paddingTop: '16px', borderTop: '1px solid #cbd5e1', textAlign: 'center' }}>
+        {/* Signatures */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginTop: '24px', textAlign: 'center', fontSize: '11px' }}>
           <div>
-            <div style={{ height: '40px' }} />
-            <p style={{ fontSize: '12px', borderTop: '1px dashed #64748b', paddingTop: '4px', fontWeight: 600 }}>
-              हस्ताक्षर: लेखापाल / Bookkeeper
-            </p>
+            <div style={{ height: '30px' }} />
+            <div style={{ borderTop: '1px dashed #78716c', paddingTop: '4px', fontWeight: 700 }}>लेखापाल</div>
           </div>
           <div>
-            <div style={{ height: '40px' }} />
-            <p style={{ fontSize: '12px', borderTop: '1px dashed #64748b', paddingTop: '4px', fontWeight: 600 }}>
-              हस्ताक्षर: अध्यक्ष / SHG President
-            </p>
+            <div style={{ height: '30px' }} />
+            <div style={{ borderTop: '1px dashed #78716c', paddingTop: '4px', fontWeight: 700 }}>अध्यक्ष</div>
           </div>
           <div>
-            <div style={{ height: '40px' }} />
-            <p style={{ fontSize: '12px', borderTop: '1px dashed #64748b', paddingTop: '4px', fontWeight: 600 }}>
-              हस्ताक्षर: सचिव / SHG Secretary
-            </p>
+            <div style={{ height: '30px' }} />
+            <div style={{ borderTop: '1px dashed #78716c', paddingTop: '4px', fontWeight: 700 }}>सचिव</div>
           </div>
-        </div>
-
-        <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '11px', color: '#94a3b8' }}>
-          Generated by SHG Auditor • Entry for Meta Global AI Developer Hackathon • Verified with Meta Muse Models
         </div>
       </div>
     </div>

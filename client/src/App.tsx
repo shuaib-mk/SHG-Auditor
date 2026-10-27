@@ -18,10 +18,10 @@ import {
   Discrepancy,
   ResolutionStatus,
 } from '../../shared/types';
-import { Mic, FileText, CheckCircle2, Download } from 'lucide-react';
+import { Mic, Camera, Scale, FileSpreadsheet } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const [lang, setLang] = useState<Language>('en');
+  const [lang, setLang] = useState<Language>('hi'); // Default to Hindi for rural ease
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [activeStep, setActiveStep] = useState<number>(1);
 
@@ -123,8 +123,8 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="app-container">
-      {/* Header */}
+    <div className="app-shell">
+      {/* Sleek Minimalist Mobile Header */}
       <Header
         lang={lang}
         setLang={setLang}
@@ -134,35 +134,78 @@ export const App: React.FC = () => {
         onOpenGuardrail={() => setShowGuardrail(true)}
       />
 
-      {/* Privacy Notice Banner */}
-      <PrivacyBanner lang={lang} />
+      {/* Main Content Area */}
+      <main className="content-area">
+        <PrivacyBanner lang={lang} />
 
-      {/* Step Navigation Tabs */}
-      <nav className="step-nav no-print">
+        {/* Step 1: Listen to Meeting */}
+        {activeStep === 1 && (
+          <AudioRecorder
+            lang={lang}
+            members={members}
+            utterances={utterances}
+            setUtterances={setUtterances}
+            speakerMap={speakerMap}
+            setSpeakerMap={setSpeakerMap}
+            spokenTransactions={spokenTransactions}
+            setSpokenTransactions={setSpokenTransactions}
+            setAudioBlobUrl={setAudioBlobUrl}
+            audioBlobUrl={audioBlobUrl}
+            onProceedToRegister={() => setActiveStep(2)}
+          />
+        )}
+
+        {/* Step 2: Register Photo */}
+        {activeStep === 2 && (
+          <RegisterUpload
+            lang={lang}
+            registerData={registerData}
+            setRegisterData={setRegisterData}
+            registerImageUrl={registerImageUrl}
+            setRegisterImageUrl={setRegisterImageUrl}
+            onProceedToReconcile={() => triggerReconciliation()}
+          />
+        )}
+
+        {/* Step 3: Check Accounts / Reconciliation */}
+        {activeStep === 3 && (
+          <ReconciliationDashboard
+            lang={lang}
+            report={report}
+            onOpenEvidence={(d) => setEvidenceDiscrepancy(d)}
+            onResolveDiscrepancy={handleResolveDiscrepancy}
+            onProceedToExport={() => setActiveStep(4)}
+          />
+        )}
+
+        {/* Step 4: Final Summary & Voucher */}
+        {activeStep === 4 && (
+          <ExportView
+            lang={lang}
+            report={report}
+            registerData={registerData}
+          />
+        )}
+      </main>
+
+      {/* Fixed Bottom Navigation Bar for Mobile */}
+      <nav className="bottom-nav no-print">
         <button
           onClick={() => setActiveStep(1)}
-          className={`step-tab ${activeStep === 1 ? 'active' : ''}`}
+          className={`nav-item ${activeStep === 1 ? 'active' : ''}`}
         >
-          <Mic size={16} />
-          <span>{t.step1}</span>
-          {spokenTransactions.length > 0 && (
-            <span className="badge badge-success" style={{ marginLeft: '6px' }}>
-              {spokenTransactions.length}
-            </span>
-          )}
+          <Mic size={20} />
+          <span>{t.step1Short}</span>
+          {spokenTransactions.length > 0 && <span className="nav-dot" />}
         </button>
 
         <button
           onClick={() => setActiveStep(2)}
-          className={`step-tab ${activeStep === 2 ? 'active' : ''}`}
+          className={`nav-item ${activeStep === 2 ? 'active' : ''}`}
         >
-          <FileText size={16} />
-          <span>{t.step2}</span>
-          {registerData && (
-            <span className="badge badge-success" style={{ marginLeft: '6px' }}>
-              ✓
-            </span>
-          )}
+          <Camera size={20} />
+          <span>{t.step2Short}</span>
+          {registerData && <span className="nav-dot" />}
         </button>
 
         <button
@@ -173,16 +216,23 @@ export const App: React.FC = () => {
               setActiveStep(3);
             }
           }}
-          className={`step-tab ${activeStep === 3 ? 'active' : ''}`}
+          className={`nav-item ${activeStep === 3 ? 'active' : ''}`}
         >
-          <CheckCircle2 size={16} />
-          <span>{t.step3}</span>
-          {report && (
+          <Scale size={20} />
+          <span>{t.step3Short}</span>
+          {report && report.discrepancies.length > 0 && (
             <span
-              className={`badge ${
-                report.discrepancies.length === 0 ? 'badge-success' : 'badge-high'
-              }`}
-              style={{ marginLeft: '6px' }}
+              style={{
+                position: 'absolute',
+                top: '2px',
+                right: '20%',
+                background: 'var(--saffron)',
+                color: '#fff',
+                fontSize: '10px',
+                borderRadius: '9999px',
+                padding: '1px 5px',
+                fontWeight: 800,
+              }}
             >
               {report.discrepancies.length}
             </span>
@@ -191,63 +241,14 @@ export const App: React.FC = () => {
 
         <button
           onClick={() => setActiveStep(4)}
-          className={`step-tab ${activeStep === 4 ? 'active' : ''}`}
+          className={`nav-item ${activeStep === 4 ? 'active' : ''}`}
         >
-          <Download size={16} />
-          <span>{t.step4}</span>
+          <FileSpreadsheet size={20} />
+          <span>{t.step4Short}</span>
         </button>
       </nav>
 
-      {/* Tab 1: Meeting Audio Recording & Speaker Diarization */}
-      {activeStep === 1 && (
-        <AudioRecorder
-          lang={lang}
-          members={members}
-          utterances={utterances}
-          setUtterances={setUtterances}
-          speakerMap={speakerMap}
-          setSpeakerMap={setSpeakerMap}
-          spokenTransactions={spokenTransactions}
-          setSpokenTransactions={setSpokenTransactions}
-          setAudioBlobUrl={setAudioBlobUrl}
-          audioBlobUrl={audioBlobUrl}
-          onProceedToRegister={() => setActiveStep(2)}
-        />
-      )}
-
-      {/* Tab 2: Register Photo Upload & Vision OCR Grid */}
-      {activeStep === 2 && (
-        <RegisterUpload
-          lang={lang}
-          registerData={registerData}
-          setRegisterData={setRegisterData}
-          registerImageUrl={registerImageUrl}
-          setRegisterImageUrl={setRegisterImageUrl}
-          onProceedToReconcile={() => triggerReconciliation()}
-        />
-      )}
-
-      {/* Tab 3: Deterministic Reconciliation Dashboard */}
-      {activeStep === 3 && (
-        <ReconciliationDashboard
-          lang={lang}
-          report={report}
-          onOpenEvidence={(d) => setEvidenceDiscrepancy(d)}
-          onResolveDiscrepancy={handleResolveDiscrepancy}
-          onProceedToExport={() => setActiveStep(4)}
-        />
-      )}
-
-      {/* Tab 4: Final Clean Export & Government Voucher */}
-      {activeStep === 4 && (
-        <ExportView
-          lang={lang}
-          report={report}
-          registerData={registerData}
-        />
-      )}
-
-      {/* Evidence Viewer Modal */}
+      {/* Modals & Drawers */}
       {evidenceDiscrepancy && (
         <EvidenceModal
           lang={lang}
@@ -259,7 +260,6 @@ export const App: React.FC = () => {
         />
       )}
 
-      {/* 30-Page Evaluation Benchmark Modal */}
       {showEvaluation && (
         <EvaluationModal
           lang={lang}
@@ -267,7 +267,6 @@ export const App: React.FC = () => {
         />
       )}
 
-      {/* Financial Advice Guardrail Modal */}
       {showGuardrail && (
         <GuardrailModal
           lang={lang}

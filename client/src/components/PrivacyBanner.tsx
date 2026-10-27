@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { Language, translations } from '../i18n/translations';
 
 interface PrivacyBannerProps {
@@ -12,20 +12,21 @@ export const PrivacyBanner: React.FC<PrivacyBannerProps> = ({ lang }) => {
   return (
     <div
       style={{
-        backgroundColor: 'var(--primary-light)',
-        color: 'var(--primary)',
-        padding: '10px 16px',
+        backgroundColor: 'var(--accent-light)',
+        color: 'var(--accent)',
+        padding: '8px 12px',
         borderRadius: 'var(--radius-md)',
-        fontSize: '12px',
-        fontWeight: 600,
+        fontSize: '11px',
+        fontWeight: 700,
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
-        marginBottom: '16px',
+        gap: '6px',
+        marginBottom: '14px',
+        lineHeight: 1.3,
       }}
     >
-      <Shield size={16} style={{ flexShrink: 0 }} />
-      <span>{t.privacyNotice}</span>
+      <ShieldCheck size={14} style={{ flexShrink: 0 }} />
+      <span>{t.privacyShort}</span>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Mic, Square, Sparkles, UserCheck, Play, Volume2, AlertCircle } from 'lucide-react';
+import { Mic, Square, Sparkles, UserCheck, Play, ArrowRight, AlertCircle, Volume2 } from 'lucide-react';
 import { Language, translations } from '../i18n/translations';
 import { Utterance, SpokenTransaction, SHGMember } from '../../../shared/types';
 
@@ -107,11 +107,10 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
       const data = await res.json();
       setUtterances(data.utterances || []);
 
-      // Extract spoken transactions via Muse Spark tool call
       await extractTransactions(data.utterances, speakerMap);
     } catch (err: any) {
       console.error(err);
-      setErrorMsg('Failed processing audio with Meta Voice API. Please try sample audio.');
+      setErrorMsg('Could not process audio. You can use the Demo button below.');
     } finally {
       setIsLoading(false);
     }
@@ -129,7 +128,6 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
       const data = await res.json();
       setUtterances(data.utterances || []);
 
-      // Pre-map speakers for convenience
       const initialMap: Record<string, string> = {
         'Speaker 1': 'Sunita Devi',
         'Speaker 2': 'Radha Bai',
@@ -142,7 +140,6 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
       };
       setSpeakerMap(initialMap);
 
-      // Create a dummy audio blob for testing playback
       const dummyBlob = new Blob(['sample-audio-data'], { type: 'audio/webm' });
       setAudioBlobUrl(URL.createObjectURL(dummyBlob));
 
@@ -194,85 +191,105 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
   };
 
   return (
-    <div className="card">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <div>
-          <h2 style={{ fontSize: '18px', fontWeight: 700 }}>{t.step1}</h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-            Meta Muse Voice Transcribe • Speaker Diarization • Code-Switching Hinglish
-          </p>
-        </div>
-        <button onClick={loadSampleAudio} className="btn-secondary" disabled={isLoading || isRecording}>
-          <Sparkles size={16} color="var(--primary)" />
-          <span>{t.loadSampleAudio}</span>
-        </button>
+    <div>
+      {/* Step Header */}
+      <div style={{ marginBottom: '14px' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)' }}>
+          {t.step1Title}
+        </h2>
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+          {t.step1Desc}
+        </p>
       </div>
 
       {errorMsg && (
-        <div style={{ padding: '12px', background: 'var(--danger-light)', color: 'var(--danger)', borderRadius: 'var(--radius-md)', marginBottom: '16px', display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <AlertCircle size={18} />
-          <span style={{ fontSize: '13px', fontWeight: 600 }}>{errorMsg}</span>
+        <div style={{ padding: '10px 14px', background: 'var(--danger-light)', color: 'var(--danger)', borderRadius: 'var(--radius-md)', marginBottom: '14px', display: 'flex', gap: '8px', alignItems: 'center', fontSize: '13px', fontWeight: 600 }}>
+          <AlertCircle size={16} style={{ flexShrink: 0 }} />
+          <span>{errorMsg}</span>
         </div>
       )}
 
-      {/* Recording Control Button & Timer */}
-      <div style={{ textAlign: 'center', padding: '24px 0', borderBottom: '1px solid var(--border-color)', marginBottom: '20px' }}>
+      {/* Hero Recording Button Card */}
+      <div className="surface-card" style={{ textAlign: 'center', padding: '24px 16px' }}>
         {!isRecording ? (
-          <button
-            onClick={startRecording}
-            className="btn-primary"
-            style={{ padding: '16px 32px', fontSize: '17px', borderRadius: '9999px', margin: '0 auto', boxShadow: 'var(--shadow-md)' }}
-            disabled={isLoading}
-          >
-            <Mic size={22} />
-            <span>{t.startRecording}</span>
-          </button>
+          <div>
+            <button
+              onClick={startRecording}
+              className="mic-big-button"
+              disabled={isLoading}
+              title={t.startRecording}
+            >
+              <Mic size={36} />
+            </button>
+            <div style={{ marginTop: '14px', fontWeight: 800, fontSize: '16px', color: 'var(--primary)' }}>
+              {t.startRecording}
+            </div>
+            <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
+              {t.noAudioRecorded}
+            </p>
+          </div>
         ) : (
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '12px' }}>
-              <span style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: 'var(--danger)', animation: 'pulse 1s infinite' }} />
-              <span style={{ fontSize: '20px', fontWeight: 800, fontFamily: 'monospace' }}>
-                {formatTime(seconds)}
-              </span>
+            <button
+              onClick={stopRecording}
+              className="mic-big-button recording"
+              title={t.stopRecording}
+            >
+              <Square size={32} fill="currentColor" />
+            </button>
+            <div style={{ marginTop: '14px', fontWeight: 800, fontSize: '22px', fontFamily: 'monospace', color: 'var(--danger)' }}>
+              {formatTime(seconds)}
             </div>
-            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--danger)', fontWeight: 700, marginTop: '2px' }}>
               {t.recordingActive}
             </p>
             <button
               onClick={stopRecording}
-              className="btn-secondary"
-              style={{ padding: '12px 28px', borderColor: 'var(--danger)', color: 'var(--danger)', fontWeight: 700 }}
+              className="btn-touch-secondary"
+              style={{ marginTop: '12px', borderColor: 'var(--danger)', color: 'var(--danger)', fontWeight: 700, width: 'auto', padding: '8px 20px', minHeight: '40px' }}
             >
-              <Square size={18} fill="currentColor" />
-              <span>{t.stopRecording}</span>
+              {t.stopRecording}
             </button>
           </div>
         )}
 
         {isLoading && (
-          <div style={{ marginTop: '16px', color: 'var(--primary)', fontWeight: 600, fontSize: '14px' }}>
+          <div style={{ marginTop: '16px', color: 'var(--primary)', fontWeight: 700, fontSize: '13px' }}>
             ⏳ {t.processingAudio}
           </div>
         )}
+
+        {/* 1-Tap Demo Pill */}
+        <div style={{ marginTop: '18px', paddingTop: '16px', borderTop: '1px solid var(--border-color)' }}>
+          <button
+            onClick={loadSampleAudio}
+            className="btn-touch-secondary"
+            disabled={isLoading || isRecording}
+            style={{ width: '100%', borderRadius: 'var(--radius-full)', background: 'var(--bg-subtle)' }}
+          >
+            <Sparkles size={16} color="var(--primary)" />
+            <span>{t.loadSampleAudio}</span>
+          </button>
+        </div>
       </div>
 
-      {/* Speaker Mapping Interface */}
+      {/* Speaker Mapping (When turns detected) */}
       {uniqueSpeakers.length > 0 && (
-        <div style={{ marginBottom: '20px', padding: '16px', background: 'var(--bg-subtle)', borderRadius: 'var(--radius-md)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-            <UserCheck size={18} color="var(--primary)" />
-            <h3 style={{ fontSize: '15px', fontWeight: 700 }}>{t.speakerMappingTitle}</h3>
+        <div className="surface-card">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+            <UserCheck size={16} color="var(--primary)" />
+            <h3 style={{ fontSize: '14px', fontWeight: 800 }}>{t.speakerMappingTitle}</h3>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '10px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {uniqueSpeakers.map((spk) => (
-              <div key={spk} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--bg-card)', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                <span style={{ fontSize: '13px', fontWeight: 700, minWidth: '70px', color: 'var(--text-secondary)' }}>
-                  {spk}:
+              <div key={spk} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-subtle)', padding: '8px 12px', borderRadius: 'var(--radius-md)' }}>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-secondary)' }}>
+                  {spk}
                 </span>
                 <select
                   value={speakerMap[spk] || ''}
                   onChange={(e) => handleSpeakerChange(spk, e.target.value)}
-                  style={{ flex: 1, padding: '6px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-primary)', fontSize: '13px' }}
+                  style={{ padding: '6px 10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-primary)', fontSize: '13px', fontWeight: 600, maxWidth: '170px' }}
                 >
                   <option value="">{t.unmappedSpeaker}</option>
                   {members.map((m) => (
@@ -287,56 +304,57 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
         </div>
       )}
 
-      {/* Timestamped Transcript View */}
-      {utterances.length > 0 && (
-        <div style={{ marginBottom: '24px' }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 700, marginBottom: '12px' }}>
-            {t.transcriptTitle} ({utterances.length} turns)
-          </h3>
-          <div style={{ maxHeight: '240px', overflowY: 'auto', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {utterances.map((u) => {
-              const speakerLabel = speakerMap[u.speaker] || u.speakerName || u.speaker;
-              const timeStr = `${Math.floor(u.startMs / 1000)}s - ${Math.floor(u.endMs / 1000)}s`;
-              return (
-                <div key={u.id} style={{ padding: '8px 12px', background: 'var(--bg-subtle)', borderRadius: 'var(--radius-sm)', fontSize: '13px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
-                    <span style={{ fontWeight: 700, color: 'var(--primary)' }}>{speakerLabel}</span>
-                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{timeStr}</span>
-                  </div>
-                  <p style={{ color: 'var(--text-primary)' }}>{u.text}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Extracted Spoken Transactions Preview */}
+      {/* Extracted Transactions Card List */}
       {spokenTransactions.length > 0 && (
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <h3 style={{ fontSize: '15px', fontWeight: 700 }}>
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: 800 }}>
               {t.spokenTxsTitle} ({spokenTransactions.length})
             </h3>
-            <button onClick={onProceedToRegister} className="btn-accent" style={{ padding: '8px 16px', fontSize: '14px' }}>
-              <span>Proceed to Register Photo →</span>
-            </button>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '10px' }}>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {spokenTransactions.map((tx) => (
-              <div key={tx.id} style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '10px 14px', background: 'var(--bg-card)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                  <span style={{ fontWeight: 700, fontSize: '14px' }}>{tx.memberName}</span>
-                  <span className="badge badge-success">₹{tx.amount}</span>
+              <div
+                key={tx.id}
+                className="surface-card"
+                style={{
+                  margin: 0,
+                  padding: '12px 14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '10px',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}>
+                  <div className="avatar-badge">
+                    {tx.memberName ? tx.memberName[0] : 'D'}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: 800, color: 'var(--text-primary)' }}>
+                      {tx.memberName}
+                    </div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                      <span style={{ textTransform: 'capitalize' }}>{tx.type.replace('_', ' ')}</span> • {tx.timestamp}
+                    </div>
+                  </div>
                 </div>
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
-                  Type: <strong style={{ textTransform: 'capitalize' }}>{tx.type.replace('_', ' ')}</strong> • at {tx.timestamp}
+
+                <div style={{ textAlign: 'right' }}>
+                  <span className="pill-badge pill-badge-green" style={{ fontSize: '14px' }}>
+                    ₹{tx.amount}
+                  </span>
                 </div>
-                <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontStyle: 'italic', borderLeft: '2px solid var(--border-color)', paddingLeft: '6px' }}>
-                  "{tx.transcriptSnippet}"
-                </p>
               </div>
             ))}
+          </div>
+
+          {/* Big Prominent Forward Action Button */}
+          <div style={{ marginTop: '16px' }}>
+            <button onClick={onProceedToRegister} className="btn-touch-accent">
+              <span>{lang === 'hi' ? 'अगला: रजिस्टर का फोटो लें →' : 'Next: Snap Register Page →'}</span>
+            </button>
           </div>
         </div>
       )}
