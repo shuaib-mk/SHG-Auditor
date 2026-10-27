@@ -1,0 +1,24 @@
+{
+  "name": "SHG Auditor - स्वयं सहायता समूह ऑडिटर",
+  "short_name": "SHG Auditor",
+  "description": "Smart bookkeeper assistant for Indian SHG meetings. Reconciles speech, register photos, and arithmetic.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#1e3a8a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192' fill='%231e3a8a'><rect width='192' height='192' rx='36' fill='%231e3a8a'/><path d='M96 36c-33.14 0-60 26.86-60 60s26.86 60 60 60 60-26.86 60-60-26.86-60-60-60zm-10 90H74v-12h12v12zm0-24H74V66h12v36zm32 24h-12V78h12v48zm0-60h-12V54h12v12z' fill='%23ffffff'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%231e3a8a'><rect width='512' height='512' rx='96' fill='%231e3a8a'/><path d='M256 96c-88.37 0-160 71.63-160 160s71.63 160 160 160 160-71.63 160-160-71.63-160-160-160zm-24 240h-32v-32h32v32zm0-64h-32V176h32v96zm80 64h-32V208h32v128zm0-160h-32v-32h32v32z' fill='%23ffffff'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
